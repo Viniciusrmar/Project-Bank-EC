@@ -104,20 +104,18 @@ document.getElementById('form-register').addEventListener('submit', async (e) =>
     if (hasError) return;
 
     const payload = {
-        nome: document.getElementById('reg-nome').value,
-        email: document.getElementById('reg-email').value,
-        senha: senha,
-        data_nascimento: nascimento,
-        cpf: cpf,
-        endereco: {
-            cep: document.getElementById('reg-cep').value,
-            logradouro: document.getElementById('reg-logradouro').value,
-            numero: document.getElementById('reg-numero').value,
-            bairro: document.getElementById('reg-bairro').value,
-            cidade: document.getElementById('reg-cidade').value,
-            estado: document.getElementById('reg-estado').value
-        }
-    };
+    nome: document.getElementById('reg-nome').value.trim(),
+    email: document.getElementById('reg-email').value.trim(),
+    senha: senha,
+    data_nascimento: nascimento,
+    cpf: cpf.replace(/\D/g, ''),
+    cep: document.getElementById('reg-cep').value.trim(),
+    logradouro: document.getElementById('reg-logradouro').value.trim(),
+    numero: document.getElementById('reg-numero').value.trim(),
+    bairro: document.getElementById('reg-bairro').value.trim(),
+    cidade: document.getElementById('reg-cidade').value.trim(),
+    estado: document.getElementById('reg-estado').value.trim()
+};
 
     try {
         const response = await fetch(`${API_BASE_URL}/usuarios/cadastro`, {
