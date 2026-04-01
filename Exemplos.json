@@ -1,0 +1,274 @@
+{
+  "comentario": "Exemplos de JSON para testar cada endpoint da API via Postman, Insomnia ou curl",
+
+  "1_POST_usuarios_cadastro": {
+    "url": "http://localhost:5000/usuarios/cadastro",
+    "method": "POST",
+    "headers": { "Content-Type": "application/json" },
+    "body": {
+      "nome": "Maria Oliveira",
+      "email": "maria@email.com",
+      "senha": "senha123",
+      "data_nascimento": "1995-08-20",
+      "cpf": "987.654.321-00",
+      "cep": "01310-100",
+      "logradouro": "Avenida Paulista",
+      "numero": "1000",
+      "bairro": "Bela Vista",
+      "cidade": "São Paulo",
+      "estado": "SP"
+    },
+    "resposta_esperada_201": {
+      "mensagem": "Usuário cadastrado com sucesso!",
+      "usuario_id": 1,
+      "conta_criada": {
+        "numero_conta": "34521-7",
+        "agencia": "0001",
+        "saldo_inicial": 0.00
+      }
+    }
+  },
+
+  "2_POST_usuarios_login": {
+    "url": "http://localhost:5000/usuarios/login",
+    "method": "POST",
+    "headers": { "Content-Type": "application/json" },
+    "body": {
+      "email": "maria@email.com",
+      "senha": "senha123"
+    },
+    "resposta_esperada_200": {
+      "mensagem": "Login realizado com sucesso!",
+      "usuario": {
+        "id": 1,
+        "nome": "Maria Oliveira",
+        "email": "maria@email.com"
+      }
+    }
+  },
+
+  "3_GET_usuarios": {
+    "url": "http://localhost:5000/usuarios",
+    "method": "GET",
+    "resposta_esperada_200": {
+      "usuarios": [
+        {
+          "id": 1,
+          "nome": "Maria Oliveira",
+          "email": "maria@email.com",
+          "cpf": "987.654.321-00",
+          "cidade": "São Paulo",
+          "estado": "SP",
+          "created_at": "2024-01-15 10:30:00"
+        }
+      ]
+    }
+  },
+
+  "4_GET_contas_por_usuario": {
+    "url": "http://localhost:5000/contas/usuario/1",
+    "method": "GET",
+    "resposta_esperada_200": {
+      "contas": [
+        {
+          "id": 1,
+          "usuario_id": 1,
+          "numero_conta": "34521-7",
+          "agencia": "0001",
+          "saldo": 0.00,
+          "tipo_conta": "CORRENTE"
+        }
+      ]
+    }
+  },
+
+  "5_POST_transacoes_entrada": {
+    "url": "http://localhost:5000/transacoes",
+    "method": "POST",
+    "headers": { "Content-Type": "application/json" },
+    "body": {
+      "conta_id": 1,
+      "tipo_transacao": "ENTRADA",
+      "descricao": "Depósito inicial",
+      "valor": 1500.00
+    },
+    "resposta_esperada_201": {
+      "mensagem": "Transação realizada com sucesso!",
+      "transacao_id": 1,
+      "novo_saldo": 1500.00
+    }
+  },
+
+  "5b_POST_transacoes_saida": {
+    "url": "http://localhost:5000/transacoes",
+    "method": "POST",
+    "headers": { "Content-Type": "application/json" },
+    "body": {
+      "conta_id": 1,
+      "tipo_transacao": "SAIDA",
+      "descricao": "Pagamento de conta",
+      "valor": 250.00
+    },
+    "resposta_esperada_201": {
+      "mensagem": "Transação realizada com sucesso!",
+      "transacao_id": 2,
+      "novo_saldo": 1250.00
+    }
+  },
+
+  "6_GET_transacoes_por_conta": {
+    "url": "http://localhost:5000/transacoes/conta/1",
+    "method": "GET",
+    "resposta_esperada_200": {
+      "transacoes": [
+        {
+          "id": 2,
+          "conta_id": 1,
+          "tipo_transacao": "SAIDA",
+          "descricao": "Pagamento de conta",
+          "valor": 250.00,
+          "data_transacao": "2024-01-15 11:00:00"
+        },
+        {
+          "id": 1,
+          "conta_id": 1,
+          "tipo_transacao": "ENTRADA",
+          "descricao": "Depósito inicial",
+          "valor": 1500.00,
+          "data_transacao": "2024-01-15 10:45:00"
+        }
+      ]
+    }
+  },
+
+  "7_POST_gastos": {
+    "url": "http://localhost:5000/gastos",
+    "method": "POST",
+    "headers": { "Content-Type": "application/json" },
+    "body": {
+      "usuario_id": 1,
+      "categoria": "Alimentação",
+      "descricao": "Supermercado Extra",
+      "valor": 320.50
+    },
+    "resposta_esperada_201": {
+      "mensagem": "Gasto cadastrado com sucesso!",
+      "gasto_id": 1
+    }
+  },
+
+  "7b_POST_gastos_outros": {
+    "url": "http://localhost:5000/gastos",
+    "method": "POST",
+    "headers": { "Content-Type": "application/json" },
+    "body": {
+      "usuario_id": 1,
+      "categoria": "Transporte",
+      "descricao": "Uber - trajeto trabalho",
+      "valor": 45.00
+    }
+  },
+
+  "8_GET_gastos_por_usuario": {
+    "url": "http://localhost:5000/gastos/usuario/1",
+    "method": "GET",
+    "resposta_esperada_200": {
+      "gastos": [
+        {
+          "id": 2,
+          "usuario_id": 1,
+          "categoria": "Transporte",
+          "descricao": "Uber - trajeto trabalho",
+          "valor": 45.00,
+          "data_gasto": "2024-01-15 12:00:00"
+        },
+        {
+          "id": 1,
+          "usuario_id": 1,
+          "categoria": "Alimentação",
+          "descricao": "Supermercado Extra",
+          "valor": 320.50,
+          "data_gasto": "2024-01-15 11:30:00"
+        }
+      ],
+      "resumo_por_categoria": {
+        "Alimentação": 320.50,
+        "Transporte": 45.00
+      },
+      "total_geral": 365.50
+    }
+  },
+
+  "9_POST_investimentos": {
+    "url": "http://localhost:5000/investimentos",
+    "method": "POST",
+    "headers": { "Content-Type": "application/json" },
+    "body": {
+      "usuario_id": 1,
+      "tipo_investimento": "TESOURO_DIRETO",
+      "nome_ativo": "Tesouro Selic 2029",
+      "valor_aplicado": 500.00,
+      "rentabilidade": 11.75
+    },
+    "resposta_esperada_201": {
+      "mensagem": "Investimento cadastrado com sucesso!",
+      "investimento_id": 1
+    }
+  },
+
+  "9b_POST_investimentos_acao": {
+    "url": "http://localhost:5000/investimentos",
+    "method": "POST",
+    "headers": { "Content-Type": "application/json" },
+    "body": {
+      "usuario_id": 1,
+      "tipo_investimento": "ACAO",
+      "nome_ativo": "PETR4",
+      "valor_aplicado": 1000.00,
+      "rentabilidade": null
+    }
+  },
+
+  "10_GET_investimentos_por_usuario": {
+    "url": "http://localhost:5000/investimentos/usuario/1",
+    "method": "GET",
+    "resposta_esperada_200": {
+      "investimentos": [
+        {
+          "id": 2,
+          "usuario_id": 1,
+          "tipo_investimento": "ACAO",
+          "nome_ativo": "PETR4",
+          "valor_aplicado": 1000.00,
+          "rentabilidade": null,
+          "data_aplicacao": "2024-01-15 12:30:00"
+        },
+        {
+          "id": 1,
+          "usuario_id": 1,
+          "tipo_investimento": "TESOURO_DIRETO",
+          "nome_ativo": "Tesouro Selic 2029",
+          "valor_aplicado": 500.00,
+          "rentabilidade": 11.75,
+          "data_aplicacao": "2024-01-15 12:00:00"
+        }
+      ],
+      "total_aplicado": 1500.00
+    }
+  },
+
+  "exemplos_erro_validacao": {
+    "cadastro_nome_curto": {
+      "body": { "nome": "Ana", "email": "ana@email.com", "senha": "123", "data_nascimento": "2000-01-01", "cpf": "111", "cep": "11111" },
+      "resposta_400": { "erros": ["Nome deve ter no mínimo 5 caracteres."] }
+    },
+    "cadastro_menor_de_idade": {
+      "body": { "nome": "Carlos Silva", "email": "carlos@email.com", "senha": "123456", "data_nascimento": "2010-05-10", "cpf": "222.333.444-55", "cep": "01310-100" },
+      "resposta_400": { "erros": ["Usuário deve ter pelo menos 18 anos."] }
+    },
+    "transacao_saldo_insuficiente": {
+      "body": { "conta_id": 1, "tipo_transacao": "SAIDA", "valor": 99999.00 },
+      "resposta_422": { "erro": "Saldo insuficiente para esta transação." }
+    }
+  }
+}

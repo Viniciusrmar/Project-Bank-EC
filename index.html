@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BankTech | Seu Banco Digital</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div id="toast-container"></div>
+
+    <section id="auth-login" class="auth-section">
+        <div class="auth-card">
+            <img src="https://via.placeholder.com/150x50/07141C/198A85?text=BankTech" alt="Logo" class="logo">
+            <h2>Bem-vindo de volta</h2>
+            <form id="form-login">
+                <div class="input-group">
+                    <label for="login-email">E-mail*</label>
+                    <input type="email" id="login-email" required placeholder="seu@email.com">
+                </div>
+                <div class="input-group">
+                    <label for="login-password">Senha*</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="login-password" required>
+                        <i class="fas fa-eye toggle-password"></i>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary">Entrar</button>
+                <p class="auth-footer">Não tem conta? <a href="#" onclick="showSection('auth-register')">Cadastre-se</a></p>
+            </form>
+        </div>
+    </section>
+
+    <section id="auth-register" class="auth-section hidden">
+        <div class="auth-card wide">
+            <h2>Criar Conta</h2>
+            <form id="form-register">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Nome Completo*</label>
+                        <input type="text" id="reg-nome" required minlength="5">
+                        <span class="error-msg"></span>
+                    </div>
+                    <div class="input-group">
+                        <label>E-mail*</label>
+                        <input type="email" id="reg-email" required>
+                        <span class="error-msg"></span>
+                    </div>
+                    <div class="input-group">
+                        <label>CPF*</label>
+                        <input type="text" id="reg-cpf" placeholder="000.000.000-00" required>
+                        <span class="error-msg"></span>
+                    </div>
+                    <div class="input-group">
+                        <label>Data de Nascimento*</label>
+                        <input type="date" id="reg-nascimento" required>
+                        <span class="error-msg"></span>
+                    </div>
+                    <div class="input-group">
+                        <label>Senha*</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="reg-password" required>
+                            <i class="fas fa-eye toggle-password"></i>
+                        </div>
+                        <span class="error-msg"></span>
+                    </div>
+                    <div class="input-group">
+                        <label>Confirmar Senha*</label>
+                        <input type="password" id="reg-confirm-password" required>
+                        <span class="error-msg"></span>
+                    </div>
+                </div>
+
+                <hr>
+                <h3>Endereço</h3>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>CEP*</label>
+                        <input type="text" id="reg-cep" required maxlength="9">
+                    </div>
+                    <div class="input-group">
+                        <label>Logradouro</label>
+                        <input type="text" id="reg-logradouro" readonly>
+                    </div>
+                    <div class="input-group">
+                        <label>Número*</label>
+                        <input type="text" id="reg-numero" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Bairro</label>
+                        <input type="text" id="reg-bairro" readonly>
+                    </div>
+                    <div class="input-group">
+                        <label>Cidade</label>
+                        <input type="text" id="reg-cidade" readonly>
+                    </div>
+                    <div class="input-group">
+                        <label>Estado</label>
+                        <input type="text" id="reg-estado" readonly maxlength="2">
+                    </div>
+                </div>
+                
+                <div class="auth-buttons">
+                    <button type="button" class="btn-secondary" onclick="showSection('auth-login')">Voltar</button>
+                    <button type="submit" class="btn-primary">Finalizar Cadastro</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section id="main-dashboard" class="hidden">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="brand">BT</div>
+            </div>
+            <ul class="nav-links">
+                <li class="active" onclick="switchTab('tab-home')"><i class="fas fa-home"></i><span>Início</span></li>
+                <li onclick="switchTab('tab-transacoes')"><i class="fas fa-exchange-alt"></i><span>Transações</span></li>
+                <li onclick="switchTab('tab-gastos')"><i class="fas fa-chart-pie"></i><span>Gastos</span></li>
+                <li onclick="switchTab('tab-investimentos')"><i class="fas fa-chart-line"></i><span>Investimentos</span></li>
+            </ul>
+            <div class="sidebar-footer">
+                <button onclick="logout()"><i class="fas fa-sign-out-alt"></i> Sair</button>
+            </div>
+        </nav>
+
+        <main class="content">
+            <header class="main-header">
+                <div class="user-info">
+                    <h1>Olá, <span id="user-display-name">Usuário</span></h1>
+                    <p>Bom dia!</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-icon"><i class="fas fa-bell"></i></button>
+                    <div class="user-avatar"><i class="fas fa-user"></i></div>
+                </div>
+            </header>
+
+            <div id="tab-home" class="dashboard-tab">
+                <div class="cards-container">
+                    <div class="card main-balance">
+                        <div class="card-header">
+                            <span>Sua conta</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+                        <p class="label">SALDO TOTAL</p>
+                        <h2 id="balance-value">R$ 0,00</h2>
+                    </div>
+                    
+                    <div class="card-row">
+                        <div class="card mini-card">
+                            <i class="fas fa-credit-card"></i>
+                            <p>Cartão de crédito</p>
+                            <div class="progress-bar"><div class="fill" style="width: 40%;"></div></div>
+                        </div>
+                        <div class="card mini-card gold">
+                            <i class="fas fa-crown"></i>
+                            <p>Premium Benefits</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <h3>Atividade Recente</h3>
+                    <div id="home-recent-list" class="list-container">
+                        </div>
+                </div>
+            </div>
+
+            <div id="tab-transacoes" class="dashboard-tab hidden">
+                <div class="tab-header">
+                    <h2>Transações</h2>
+                    <button class="btn-primary" onclick="openModal('modal-transacao')">+ Nova Transação</button>
+                </div>
+                <div class="list-container" id="list-transacoes"></div>
+            </div>
+
+            <div id="tab-gastos" class="dashboard-tab hidden">
+                <div class="tab-header">
+                    <h2>Controle de Gastos</h2>
+                    <button class="btn-primary" onclick="openModal('modal-gasto')">+ Novo Gasto</button>
+                </div>
+                <div class="list-container" id="list-gastos"></div>
+            </div>
+
+            <div id="tab-investimentos" class="dashboard-tab hidden">
+                <div class="tab-header">
+                    <h2>Carteira de Investimentos</h2>
+                    <button class="btn-primary" onclick="openModal('modal-investimento')">+ Novo Investimento</button>
+                </div>
+                <div class="list-container" id="list-investimentos"></div>
+            </div>
+        </main>
+    </section>
+
+    <div id="modal-overlay" class="modal-overlay hidden">
+        <div id="modal-transacao" class="modal hidden">
+            <h3>Nova Transação</h3>
+            <form id="form-transacao">
+                <input type="text" id="trans-descricao" placeholder="Descrição" required>
+                <input type="number" step="0.01" id="trans-valor" placeholder="Valor (R$)" required>
+                <select id="trans-tipo">
+                    <option value="entrada">Entrada</option>
+                    <option value="saida">Saída</option>
+                </select>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-secondary" onclick="closeModal()">Cancelar</button>
+                    <button type="submit" class="btn-primary">Confirmar</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="modal-gasto" class="modal hidden">
+            <h3>Registrar Gasto</h3>
+            <form id="form-gasto">
+                <input type="text" id="gasto-categoria" placeholder="Categoria (ex: Alimentação)" required>
+                <input type="number" step="0.01" id="gasto-valor" placeholder="Valor (R$)" required>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-secondary" onclick="closeModal()">Cancelar</button>
+                    <button type="submit" class="btn-primary">Salvar</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="modal-investimento" class="modal hidden">
+            <h3>Novo Investimento</h3>
+            <form id="form-investimento">
+                <input type="text" id="inv-titulo" placeholder="Título (ex: Tesouro Direto)" required>
+                <input type="number" step="0.01" id="inv-valor" placeholder="Valor Aplicado" required>
+                <input type="text" id="inv-tipo" placeholder="Tipo (ex: Renda Fixa)" required>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-secondary" onclick="closeModal()">Cancelar</button>
+                    <button type="submit" class="btn-primary">Investir</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
